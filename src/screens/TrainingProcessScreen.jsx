@@ -1,19 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet} from "react-native";
 import TrainingProcess from "../components/TrainingProcess/TrainingProcess";
-import { Provider as TrainingProcessContextProvider } from "../contexts/TrainingProcessContext";
+import {
+    Context as TrainingProcessContext,
+    Provider as TrainingProcessContextProvider
+} from "../contexts/TrainingProcessContext";
 
 const TrainingProcessScreen = ({route}) => {
-
-    useEffect(() => {
-    }, []);
-
     const { training } = route.params;
+    const parsedTrainings = [];
+
+    for(let i = 0; i < training.circles; i++) {
+        training.exercises.forEach( t => {
+            parsedTrainings.push({...t, type: 'training'});
+            parsedTrainings.push({ name: 'Resting', time: t.rest, type: 'resting'});
+        });
+        parsedTrainings.push({ name: 'Resting', time: training.circleRest, type: 'resting'});
+    }
+    parsedTrainings.pop();
+    parsedTrainings.pop();
 
     return (
         <View style={{flex: 1}}>
             <TrainingProcessContextProvider>
-                <TrainingProcess training={training}/>
+                <TrainingProcess actions={parsedTrainings}/>
             </TrainingProcessContextProvider>
         </View>
     );

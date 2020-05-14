@@ -1,35 +1,73 @@
-import React, { Reducer, ReducerState, useReducer } from "react";
+import React, {Reducer, ReducerState, useEffect, useReducer} from "react";
 
 
 const Context = React.createContext({});
 
 const Provider = ({ children }) => {
 
-    const locationReducer = (state, action) => {
+    const reducer = (state, action) => {
         switch (action.type) {
             case 'set_timer':
-                return{ ...state, timer: action.payload }
-            case 'set_id':
-                return { ...state, id: action.payload };
-            case 'set_name':
-                return { ...state, name: action.payload };
-            case 'set_exercises':
-                return { ...state, exercises: action.payload };
+                return{ ...state, timer: action.payload };
+            case 'set_left_actions':
+                return { ...state, leftActions: action.payload };
+            case 'set_done_actions':
+                return { ...state, doneActions: action.payload };
             default:
                 return state;
         }
     };
 
-    const defaultValue = { timer: 0, id: "none", name: "none", lvl: 0, exercises: [] }
+    const defaultValue = {
+        timer: {
+            seconds: 0,
+            isActive: false
+        },
+        leftActions: [],
+        doneActions: []
+    }
 
 
-    const [state, dispatch] = useReducer(locationReducer, defaultValue);
+    const [state, dispatch] = useReducer(reducer, defaultValue);
 
     const value = {
         state,
-        setId: (id) => dispatch({ type: 'set_id', payload: id }),
-        setName: (name) => dispatch({ type: 'set_name', payload: name }),
-        setExercises: (exercises) => dispatch({ type: 'set_exercises', payload: exercises })
+        toggle: () =>
+        {
+            console.warn(state);
+            dispatch({type: 'set_timer', payload: {...state.timer, isActive: !state.timer.isActive}});
+        },
+        reset: () =>
+            dispatch({type: 'set_timer', payload: {...state.timer, seconds: 0, isActive: false}}),
+        setSeconds: (sec) =>
+            dispatch({type: 'set_timer', payload: {...state.timer, seconds: sec}}),
+        setLeftActions: (actions) =>
+            dispatch({ type: 'set_left_actions', payload: actions }),
+        setDoneActions: (exercise) =>
+            dispatch({type: 'set_done_actions', payload: {...state, doneActions: exercise}}),
+        getCurrentActionName: () => {
+            if(state.leftActions.length > 0) {
+                return state.leftActions[0].name;
+            } else {
+                return "";
+            }
+        },
+        nextAction: () => {
+            if (state.leftActions.length ) {
+                const doneAction = { ...state.leftActions[0], time: state.timer.seconds }
+                dispatch({ type: 'set_done_actions', payload: [...state.doneActions, doneAction] });
+                dispatch({ type: 'set_left_actions', payload: state.leftActions.slice(1) });
+                dispatch({type: 'set_timer', payload: {...state.timer, seconds: 0}});
+            }
+        },
+        previousAction: () => {
+            if (state.doneActions.length ) {
+                const leftAction = { ...state.doneActions[state.doneActions.length - 1]}
+                dispatch({ type: 'set_left_actions', payload: [leftAction, ...state.leftActions] });
+                dispatch({ type: 'set_done_actions', payload: state.doneActions.slice(0, -1) });
+                dispatch({type: 'set_timer', payload: {...state.timer, seconds: 0}});
+            }
+        }
     };
 
     return (

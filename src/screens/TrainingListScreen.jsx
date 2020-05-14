@@ -9,20 +9,26 @@ const trainings = [{
     description: 'Всего за 10 минут этой высокоинтенсивной тренировки твой пульс достигнет максимума.',
     image: require('../../assets/trainings/tabata.jpg'),
     custom: false,
-    exercises: [{}, {}, {}],
-    sets: 4,
-    pauseTime: 15,
-    pauseBetweenSets: 60
+    exercises: [
+        {name: 'Jumps', repeats: 10, rest: 10},
+        {name: 'Hips', repeats: 20, rest: 15},
+        {name: 'Sit downs', repeats: 15, rest: 10}
+    ],
+    circles: 3,
+    circleRest: 60
 }, {
     name: 'Second',
     description: 'Bla bla bla.',
     image: null,
-    custom: true
+    custom: true,
+    exercises: [],
+
 }, {
     name: 'Third',
     description: 'Bla bla bla bla bla bla.',
     image: null,
-    custom: true
+    custom: true,
+    exercises: [],
 }];
 
 const TrainingListScreen = ({navigation}) => {
