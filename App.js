@@ -1,33 +1,20 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {Divider, Text} from 'react-native-elements';
-import TrainingList from "./src/components/TrainingList/TrainingList";
+import { StyleSheet} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import TrainingListScreen from "./src/screens/TrainingListScreen";
+import TrainingProcessScreen from "./src/screens/TrainingProcessScreen";
 
-const trainings = [{
-    name: 'Tabata',
-    description: 'Всего за 10 минут этой высокоинтенсивной тренировки твой пульс достигнет максимума. Каждая тренировка - это заряд энергии, бодрости, сил и отличного настроения.',
-    image: require('./assets/trainings/tabata.jpg'),
-    custom: false
-}, {
-    name: 'Second',
-    description: 'Bla bla bla.',
-    image: null,
-    custom: true
-}, {
-    name: 'Third',
-    description: 'Bla bla bla bla bla bla.',
-    image: null,
-    custom: true
-}];
+const Stack = createStackNavigator();
 
 export default () => {
     return (
-        <ScrollView style={styles.trainingList}>
-            <Text h2>Training list</Text>
-            <Divider/>
-
-            <TrainingList trainings={trainings} onPress={(t) => console.warn(t)}/>
-        </ScrollView>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Training List" component={TrainingListScreen}/>
+                <Stack.Screen name="Training" component={TrainingProcessScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 

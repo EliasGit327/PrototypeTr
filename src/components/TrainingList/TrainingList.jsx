@@ -6,7 +6,10 @@ import TrainingCard from "./components/TrainingCard";
 // onPress: (trainingPreview) => {}
 export default ({trainings, onPress}) => {
     return (
-        <FlatList data={trainings}
+        <FlatList style={{marginHorizontal: 10}}
+                  showsVerticalScrollIndicator={false}
+                  data={trainings}
+                  keyExtractor={item => item.name}
                   renderItem={({item}) => (
                       <TrainingCard onPress={onPress} trainingPreview={item}/>
                   )}/>
