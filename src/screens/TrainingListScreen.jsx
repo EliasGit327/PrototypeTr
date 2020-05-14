@@ -1,6 +1,4 @@
-import {NavigationContainer} from "@react-navigation/native";
 import {View, ScrollView, StyleSheet, SafeAreaView} from "react-native";
-import {Button, Divider, Text} from "react-native-elements";
 import TrainingList from "../components/TrainingList/TrainingList";
 import React from "react";
 

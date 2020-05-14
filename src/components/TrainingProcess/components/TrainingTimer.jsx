@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {View} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {Button, Text} from "react-native-elements";
 import { Context as TrainingProcessContext } from "../../../contexts/TrainingProcessContext";
 
@@ -27,10 +27,36 @@ const TrainingTimer = ({}) => {
     }, [state.timer.isActive, state.timer.seconds]);
 
     return(
-        <View>
-            <Text h3>Timer: {state.timer.seconds}</Text>
+        <View style={styles.view}>
+            <View style={styles.circleView}>
+                <Text h1 h1Style={styles.timer}>{state.timer.seconds}</Text>
+            </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    view: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    timer: {
+        fontSize: 50,
+        color: '#2089DC'
+    },
+    circleView: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 100,
+        minWidth: 100,
+        borderRadius: 50,
+        borderWidth: 5,
+        borderColor: '#2089DC'
+    }
+});
 
 export default TrainingTimer;

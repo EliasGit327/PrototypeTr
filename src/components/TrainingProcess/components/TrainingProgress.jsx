@@ -20,9 +20,9 @@ const TrainingProgress = ({doneActions, leftActions}) => {
     }
 
     return (
-        <View>
-            <Text>Done actions: {state.doneActions.length}</Text>
-            <Text>Left actions: {state.leftActions.length}</Text>
+        <View style={{marginTop: 10}}>
+            {/*<Text>Done actions: {state.doneActions.length}</Text>*/}
+            {/*<Text>Left actions: {state.leftActions.length}</Text>*/}
 
             <View style={styles.mainView}>
                 {drawCells()}
@@ -42,15 +42,17 @@ const styles = StyleSheet.create({
     },
     toDoAction: {
         marginHorizontal: 5,
-        backgroundColor: '#c8d4d7',
-        height: 10,
-        width: 10,
+        backgroundColor: '#c0ccd5',
+        height: 5,
+        width: 5,
+        borderRadius: 50
     },
     doneAction: {
         marginHorizontal: 5,
-        backgroundColor: '#22a39c',
-        height: 10,
-        width: 10,
+        backgroundColor: '#2089DC',
+        height: 5,
+        width: 5,
+        borderRadius: 50
     }
 });
 
