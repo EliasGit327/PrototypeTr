@@ -19,11 +19,15 @@ const TrainingProcess = ({actions}) => {
         setLeftActions(actions);
     }, []);
 
-    const onPrevBtnPress = () => {
-        if (state.timer.seconds !== 0) {
-            reset();
+    const onNextBtnPress = () => {
+        if (state.leftActions.length > 0) {
+            nextAction();
         } else {
-            previousAction();
+            reset();
+            const actions = state.doneActions.filter(a => a.type === 'training');
+            const rested = state.doneActions.filter(a => a.type === 'resting');
+
+            console.warn({actions, rested});
         }
     }
 
@@ -37,12 +41,12 @@ const TrainingProcess = ({actions}) => {
 
             {
                 state.doneActions.map((a, k) =>
-                <Text key={a.name + k}>{a.name} | {a.time} | {a.type}</Text>)
+                <Text key={a.name + k}>{a.name} | {a.time} |  {a.type === 'resting' ? a.rest : 'none'}</Text>)
             }
             <Text>_________________________</Text>
             {
                 state.leftActions.map((a, k) =>
-                <Text key={a.name + k}>{a.name} | {a.time ? a.time : 'none'} | {a.type}</Text>)
+                <Text key={a.name + k}>{a.name} | {a.time ? a.time : 'none'} | {a.type === 'resting' ? a.rest : 'none'}</Text>)
             }
 
 
@@ -51,10 +55,10 @@ const TrainingProcess = ({actions}) => {
             </View>
 
             <View style={styles.controls} >
-                <Button title="Prev" onPress={previousAction}/>
+                <Button title="Prev" disabled={state.doneActions.length === 0} onPress={previousAction}/>
                 <Button title={state.timer.isActive ? 'Pause' : 'Start'} onPress={toggle}>
                 </Button>
-                <Button title="Next" onPress={nextAction}/>
+                <Button title="Next" onPress={onNextBtnPress}/>
 
             </View>
         </View>

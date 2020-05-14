@@ -13,6 +13,8 @@ const Provider = ({ children }) => {
                 return { ...state, leftActions: action.payload };
             case 'set_done_actions':
                 return { ...state, doneActions: action.payload };
+            case 'set_training':
+                return { ...state, training: action.payload };
             default:
                 return state;
         }
@@ -24,7 +26,8 @@ const Provider = ({ children }) => {
             isActive: false
         },
         leftActions: [],
-        doneActions: []
+        doneActions: [],
+        training: {}
     }
 
 
@@ -33,10 +36,7 @@ const Provider = ({ children }) => {
     const value = {
         state,
         toggle: () =>
-        {
-            console.warn(state);
-            dispatch({type: 'set_timer', payload: {...state.timer, isActive: !state.timer.isActive}});
-        },
+            dispatch({type: 'set_timer', payload: {...state.timer, isActive: !state.timer.isActive}}),
         reset: () =>
             dispatch({type: 'set_timer', payload: {...state.timer, seconds: 0, isActive: false}}),
         setSeconds: (sec) =>
@@ -67,7 +67,8 @@ const Provider = ({ children }) => {
                 dispatch({ type: 'set_done_actions', payload: state.doneActions.slice(0, -1) });
                 dispatch({type: 'set_timer', payload: {...state.timer, seconds: 0}});
             }
-        }
+        },
+        setTraining: (training) => dispatch({ type: 'set_training', payload: training})
     };
 
     return (

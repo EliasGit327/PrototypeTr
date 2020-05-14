@@ -13,9 +13,9 @@ const TrainingProcessScreen = ({route}) => {
     for(let i = 0; i < training.circles; i++) {
         training.exercises.forEach( t => {
             parsedTrainings.push({...t, type: 'training'});
-            parsedTrainings.push({ name: 'Resting', time: t.rest, type: 'resting'});
+            parsedTrainings.push({ name: 'Resting', rest: t.rest, type: 'resting'});
         });
-        parsedTrainings.push({ name: 'Resting', time: training.circleRest, type: 'resting'});
+        parsedTrainings.push({ name: 'Resting', rest: training.circleRest, type: 'resting'});
     }
     parsedTrainings.pop();
     parsedTrainings.pop();

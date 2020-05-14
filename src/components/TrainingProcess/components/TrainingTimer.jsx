@@ -5,15 +5,22 @@ import { Context as TrainingProcessContext } from "../../../contexts/TrainingPro
 
 
 const TrainingTimer = ({}) => {
-    const { state, setSeconds } = useContext(TrainingProcessContext);
+    const { state, setSeconds, nextAction } = useContext(TrainingProcessContext);
 
     useEffect(() => {
         let interval = null;
+
+        let leftAction = state.leftActions[0];
+        if (leftAction && leftAction.type === 'resting' && state.timer.seconds >= leftAction.rest) {
+            nextAction();
+        }
+
         if (state.timer.isActive) {
             interval = setInterval(() => {
                 setSeconds(state.timer.seconds + 1);
             }, 1000);
-        } else if (!state.timer.isActive && state.timer.seconds !== 0) {
+        }
+        else if (!state.timer.isActive && state.timer.seconds !== 0) {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
