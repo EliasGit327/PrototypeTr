@@ -2,37 +2,59 @@ import React, {useContext, useEffect} from "react";
 import {View, StyleSheet} from "react-native";
 import {Text, Button} from "react-native-elements";
 import { Context as TrainingProcessContext } from "../../contexts/TrainingProcessContext";
-import Timer from "./components/Timer";
+import TrainingTimer from "./components/TrainingTimer";
+import TrainingProgress from "./components/TrainingProgress";
 
-const TrainingProcess = ({training}) => {
+const TrainingProcess = ({actions}) => {
+    const {
+        state,
+        reset,
+        toggle,
+        setLeftActions,
+        nextAction,
+        previousAction
+    } = useContext(TrainingProcessContext);
 
     useEffect(() => {
-        context.setExercises(training.exercises);
+        setLeftActions(actions);
     }, []);
 
-    const context = useContext(TrainingProcessContext);
+    const onPrevBtnPress = () => {
+        if (state.timer.seconds !== 0) {
+            reset();
+        } else {
+            previousAction();
+        }
+    }
 
     return (
         <View style={styles.view}>
-            <Timer/>
+            <TrainingProgress leftActions={state.leftActions.length}
+                              doneActions={state.doneActions.length}
+            />
 
-            <Text>{context.state.exercises.length}</Text>
+            <TrainingTimer/>
+
+            {
+                state.doneActions.map((a, k) =>
+                <Text key={a.name + k}>{a.name} | {a.time} | {a.type}</Text>)
+            }
+            <Text>_________________________</Text>
+            {
+                state.leftActions.map((a, k) =>
+                <Text key={a.name + k}>{a.name} | {a.time ? a.time : 'none'} | {a.type}</Text>)
+            }
+
 
             <View style={{width: '100%' , backgroundColor: 'powderblue'}}>
-                <Text>Current training</Text>
+                <Text>{state.leftActions.length ? state.leftActions[0].name : null}</Text>
             </View>
 
-            <View style={{width: '100%' , backgroundColor: 'powderblue'}}>
-                <Text>Clock</Text>
-            </View>
-
-            <View style={{width: '100%', height: 200, backgroundColor: 'skyblue'}}>
-                <Text>Image</Text>
-            </View>
             <View style={styles.controls} >
-                <Button title="Prev"/>
-                <Button title="Start"/>
-                <Button title="Next"/>
+                <Button title="Prev" onPress={previousAction}/>
+                <Button title={state.timer.isActive ? 'Pause' : 'Start'} onPress={toggle}>
+                </Button>
+                <Button title="Next" onPress={nextAction}/>
 
             </View>
         </View>
